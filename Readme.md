@@ -108,42 +108,70 @@ dependencies {
 First, define your state machine:
 
 ```java
-public class ReplicatedCounter extends S2CStateMachine {
-    private long counter = 0;
+public class CounterStateMachine extends S2CStateMachine {
 
-    @Override
-    public ByteString snapshot() {
-        return ByteString.copyFromUtf8(String.valueOf(counter));
-    }
+  private final AtomicInteger counter = new AtomicInteger();
 
-    @Override
-    protected void loadSnapshot(ByteString snapshot) {
-        String s = snapshot.toStringUtf8();
-        counter = s.isEmpty() ? 0 : Long.parseLong(s);
-    }
-    
-    @Override
-    protected ByteString handleRequest(ByteString request, StateRequestType type) throws ApplicationException {
-        String cmd = request.toStringUtf8();
-        if (cmd.equals("INC")) {
-            counter++;
-            return ByteString.EMPTY;
-        } else if (cmd.equals("GET")) {
-            return ByteString.copyFromUtf8(String.valueOf(counter));
-        }
-      	throw new ApplicationException("Unknown command %s".formatted(cmd));
-    }
+  private static final String INCREMENT = "INCREMENT";
+  private static final String GET = "GET";
 
-    // Command (Strongly Consistent Write)
-    public void increment() {
-        sendToLeader(ByteString.copyFromUtf8("INC"), StateRequestType.COMMAND);
-    }
+  @Override
+  public ByteString snapshot() {
+    ByteBuffer buf = ByteBuffer.allocate(Integer.BYTES);
+    buf.putInt(counter.get());
+    buf.flip();
+    return ByteString.copyFrom(buf);
+  }
 
-    // Read (Linearizable)
-    public long get() {
-        StateRequestResponse res = sendToLeader(ByteString.copyFromUtf8("GET"), StateRequestType.READ);
-        return Long.parseLong(res.getApplicationResult().getBody().toStringUtf8());
+  @Override
+  protected void loadSnapshot(ByteString snapshot) {
+    ByteBuffer buf = snapshot.asReadOnlyByteBuffer();
+    counter.set(buf.getInt());
+  }
+
+  @Override
+  protected ByteString handleRequest(ByteString request, StateRequestType requestType)
+      throws ApplicationException {
+    String str = request.toString(StandardCharsets.UTF_8);
+    if (str.equals(INCREMENT)) {
+      counter.incrementAndGet();
+    } else if (!str.equals(GET)) {
+      throw new ApplicationException("Unknown command %s".formatted(str));
     }
+    ByteBuffer buf = ByteBuffer.allocate(Integer.BYTES);
+    buf.putInt(counter.get());
+    return ByteString.copyFrom(buf.array());
+  }
+
+  public Integer increment() throws ApplicationException {
+    StateRequestResponse response = sendToLeader(ByteString.copyFrom(INCREMENT, StandardCharsets.UTF_8),
+        StateRequestType.COMMAND);
+    int val = 0;
+    if (response.hasApplicationResult()) {
+      val = ByteBuffer.wrap(response.getApplicationResult().getBody().toByteArray()).getInt();
+    } else if (response.hasApplicationResultUnavailableError()) {
+      val = get();
+    } else {
+      handleInvalidCommandResponse();
+    }
+    return val;
+  }
+
+
+  public Integer get() throws ApplicationException {
+    StateRequestResponse response = sendToLeader(ByteString.copyFrom(GET, StandardCharsets.UTF_8),
+        StateRequestType.READ);
+    int val = 0;
+    // Per implementation, get() should only return a response!
+    if (response.hasApplicationResult()) {
+      val = ByteBuffer.wrap(response.getApplicationResult().getBody().toByteArray()).getInt();
+    } else {
+      handleInvalidReadResponse();
+    }
+    return val;
+  }
+
+}
 }
 ```
 
