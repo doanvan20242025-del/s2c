@@ -101,7 +101,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.mzazaipsc:s2c:0.1.0-alpha'
+    implementation 'com.github.io-s2c:s2c:0.1.0-alpha'
 }
 ```
 
