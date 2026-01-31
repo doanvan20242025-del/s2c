@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.s2c'
-version = '0.1.0-alpha'
+version = project.findProperty("version") ?: "0.0.0-SNAPSHOT"
 
 ext {
     awsSdkVersion = '2.27.21'
@@ -113,9 +113,9 @@ publishing {
                 }
                 
                 scm {
-                    connection = 'scm:git:git://github.com/mzazaipsc/s2c.git'
-                    developerConnection = 'scm:git:ssh://github.com/mzazaipsc/s2c.git'
-                    url = 'https://github.com/mzazaipsc/s2c'
+                    connection = 'scm:git:git://github.com/io-s2c/s2c.git'
+                    developerConnection = 'scm:git:ssh://github.com/io-s2c/s2c.git'
+                    url = 'https://github.com/io-s2c/s2c'
                 }
             }
         }
