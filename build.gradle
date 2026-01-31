@@ -118,6 +118,13 @@ publishing {
                     url = 'https://github.com/io-s2c/s2c'
                 }
             }
+            pom.withXml {
+                asNode().dependencies.dependency.findAll {
+                    it.groupId.text() == 'com.google.protobuf'
+                }.each {
+                    it.scope[0].setValue('compile')
+                }
+            }
         }
     }
 
